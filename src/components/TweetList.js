@@ -5,10 +5,8 @@ import Tweet from './Tweet'
 
 class TweetList extends Component {
   componentDidMount() {
-    const mockTweets = [{ id: 1, name: 'John', username: 'jd', tweetText: 'Hello', timestamp: 1234 },
-    { id: 12, name: 'John2', username: 'jd2', tweetText: 'Hello2', timestamp: 1235 },
-    ]
-    this.props.fetchTweetsSuccess(mockTweets)
+    const username = 'kaizerwing'
+    this.props.fetchTweets(username)
   }
   render() {
     return (
@@ -22,7 +20,7 @@ class TweetList extends Component {
 
 TweetList.propTypes = {
   tweets: PropTypes.arrayOf(PropTypes.object),
-  fetchTweetsSuccess: PropTypes.func.isRequired,
+  fetchTweets: PropTypes.func.isRequired,
 }
 
 TweetList.defaultProps = {
