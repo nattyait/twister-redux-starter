@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { login } from '../actions/auth'
@@ -9,24 +9,30 @@ const LoginInput = props => (
   </div>
 )
 
-const LoginForm = (props) => {
-  const submitLogin = (values) => {
-    props.login(values.username, values.password)
+class LoginForm extends Component {
+  constructor(props) {
+    super(props)
+    this.submitLogin = this.submitLogin.bind(this)
   }
-  return (
-    <div className="login-form">
-      <form onSubmit={props.handleSubmit(submitLogin)}>
-        <div className="login-label">
-          Log in with your username
-        </div>
-        <Field name="username" component={LoginInput} type="text" className="form-control" placeholder="Username" />
-        <Field name="password" component={LoginInput} type="password" className="form-control" placeholder="Password" />
-        <div className="form-group text-right">
-          <button className="btn btn-default">Log in</button>
-        </div>
-      </form>
-    </div>
-  )
+  submitLogin(values) {
+    this.props.login(values.username, values.password)
+  }
+  render() {
+    return (
+      <div className="login-form">
+        <form onSubmit={this.props.handleSubmit(this.submitLogin)}>
+          <div className="login-label">
+            Log in with your username
+          </div>
+          <Field name="username" component={LoginInput} type="text" className="form-control" placeholder="Username" />
+          <Field name="password" component={LoginInput} type="password" className="form-control" placeholder="Password" />
+          <div className="form-group text-right">
+            <button className="btn btn-default">Log in</button>
+          </div>
+        </form>
+      </div>
+    )
+  }
 }
 
 LoginForm.propTypes = {
