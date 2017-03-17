@@ -8,6 +8,12 @@ class TweetList extends Component {
     const ownerUsername = this.props.ownerUsername || 'kaizerwing'
     this.props.fetchTweets(ownerUsername)
   }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.ownerUsername !== nextProps.ownerUsername) { // check  if something change to prevent infinte loop and make server down
+      const ownerUsername = nextProps.ownerUsername || 'kaizerwing'
+      this.props.fetchTweets(ownerUsername)
+    }
+  }
   render() {
     return (
       <div className="tweet-list">
