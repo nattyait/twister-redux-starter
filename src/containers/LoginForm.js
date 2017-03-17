@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Field, reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
+import { push as redirect } from 'connected-react-router'
 import { login } from '../actions/auth'
 
 const LoginInput = props => (
@@ -13,6 +14,16 @@ class LoginForm extends Component {
   constructor(props) {
     super(props)
     this.submitLogin = this.submitLogin.bind(this)
+  }
+  componentWillMount() {
+    if (this.props.token) {
+      this.props.redirect('/')
+    }
+  }
+  componentWillUpdate(nextProps) {
+    if (nextProps.token) {
+      this.props.redirect('/')
+    }
   }
   submitLogin(values) {
     this.props.login(values.username, values.password)
@@ -38,15 +49,25 @@ class LoginForm extends Component {
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
+  redirect: PropTypes.func.isRequired,
+  token: PropTypes.string,
+}
+LoginForm.defaultProps = {
+  token: '',
 }
 
 const LoginReduxForm = reduxForm({
   form: 'login',
 })(LoginForm)
 
-const mapDispatchToProps = dispatch => ({
-  login: (username, password) => dispatch(login(username, password)),
+const mapStateToProps = state => ({
+  token: state.auth.token,
 })
 
-export default connect(null, mapDispatchToProps)(LoginReduxForm)
-// or export default connect(null, { login})(LoginReduxForm)) and don't have to have mapStateToProps
+/* const mapDispatchToProps = dispatch => ({
+  login: (username, password) => dispatch(login(username, password)),
+  redirect: url => dispatch(push(url)),
+}) */
+
+// export default connect(mapStateToProps, mapDispatchToProps)(LoginReduxForm)
+export default connect(mapStateToProps, { login, redirect })(LoginReduxForm)
