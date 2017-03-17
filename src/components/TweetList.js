@@ -5,8 +5,8 @@ import Tweet from './Tweet'
 
 class TweetList extends Component {
   componentDidMount() {
-    const username = 'kaizerwing'
-    this.props.fetchTweets(username)
+    const ownerUsername = this.props.ownerUsername || 'kaizerwing'
+    this.props.fetchTweets(ownerUsername)
   }
   render() {
     return (
@@ -21,6 +21,7 @@ class TweetList extends Component {
 TweetList.propTypes = {
   tweets: PropTypes.arrayOf(PropTypes.object),
   fetchTweets: PropTypes.func.isRequired,
+  ownerUsername: PropTypes.string.isRequired,
 }
 
 TweetList.defaultProps = {
